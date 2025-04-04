@@ -1,13 +1,16 @@
-# {{product_name}}
+# DIVAnd in R
 
 ## Introduction
 
-{{product_introduction}}
+DIVAnd is a software tool, written in Julia, designed to interpolate in situ measurements onto a regular grid.
+The tool has been applied in several European projects to create climatologies for variable such as temperature, salinity or eutrophication variables.
+
+`R` is a languague widely used in the scientific community, hence the interface to call DIVAnd within R is the objective of the present project.
 
 ## Directory structure
 
 ```
-{{directory_name}}/
+EMODnet-Biology-DIVAnd-R/
 ├── analysis
 ├── data/
 │   ├── derived_data/
