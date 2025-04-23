@@ -3,15 +3,17 @@
 # with the command julia_assign("aa", aa), with aa taking the name of the different variables
 
 library(JuliaCall)
-# julia_setup(JULIA_HOME = path.expand("~/.juliaup/bin/"))
-julia_setup(JULIA_HOME = "/home/ctroupin/miniconda3/bin/")
+julia_setup(JULIA_HOME = path.expand("~/.juliaup/bin/"))
+# julia_setup(JULIA_HOME = "/home/ctroupin/miniconda3/bin/")
 julia_command("using DIVAnd")
 library(logger)
 library(ggplot2)
 
 # Create directories
-figdir <- "./figures/"
+figdir <- "../product/figures/"
+resdir <- "../product/netcdf"
 dir.create(figdir)
+dir.create(resdir)
 
 # Create 1D data
 x <- c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.1)
@@ -62,9 +64,25 @@ ggplot() +
   scale_colour_manual("", 
                       breaks = c("Observations", "Reference", "Interpolation"),
                       values = c("blue", "green", "orange")) +
-  theme(legend.position = c(0.8, 0.9)) + 
+  theme(legend.position.inside = c(0.8, 0.9)) + 
   xlab("x") +
   ylab("f") +
-  ggtitle("DIVAnd interpolation in 1D")
+  ggtitle("DIVAnd interpolation in 1 dimension")
+
 
 ggsave(file.path(figdir, "divand_simple_1D.png"))
+
+# Write the results in a netCDF file
+library(ncdf4)
+
+filename = file.path(resdir, "diva_1D.nc")
+nx <- length(xi)
+lon1 <- ncdim_def("longitude", "degrees_east", xi)
+mv <- -999 #missing value to use
+var_field <- ncvar_def("field", "celsius", list(lon1), longname="Temperature", mv)
+
+ncnew <- nc_create(filename, list(var_field))
+ncvar_put(ncnew, var_field, fi, start=c(1), count=c(nx))
+
+# Don't forget to close the file
+nc_close(ncnew)
