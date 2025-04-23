@@ -46,14 +46,19 @@ sudo apt install rstudio
 ## Installation of Julia
 
 We suggest to use the `juliaup` tool (https://github.com/JuliaLang/juliaup), which makes easier the installation, upgrade and management of different versions of Julia. On Linux or Mac:
+
 ```bash
 curl -fsSL https://install.julialang.org | sh
 ```
+
 The Julia version that will be used can be obtained with the command:
+
 ```bash
 juliaup status
 ```
+
 which gives, in our case:
+
 ```bash
  Default  Channel  Version                 Update 
 --------------------------------------------------
@@ -69,11 +74,13 @@ which gives, in our case:
 The selected library to call Julia in R is [`JuliaCall`](https://github.com/JuliaInterop/JuliaCall).
 
 In a R session:
+
 ```R
 install.packages("JuliaCall")
 ```
 
 You are asked if you want to use a personal library (type "yes"):
+
 ```R
 Warning in install.packages("JuliaCall") :
   'lib = "/usr/local/lib/R/site-library"' is not writable
@@ -105,11 +112,14 @@ nickname       How About a Twenty-Six
 
 ## Installation of netCDF 
 
-`R` relies on the utility `nc-config` (a command to query netCDF build options) so it has to be installed:
+`R` relies on the utility `nc-config` (a command to query netCDF build options). It can be installed by running the command:
+
 ```bash
 sudo apt-get install libnetcdf-dev
 ```
+
 then the library can be installed:
+
 ```R
 install.packages("ncdf4")
 ```
@@ -120,20 +130,23 @@ No used so far but let's keep it here for the time being.
 
 ### jsonlite
 When tested with Visual Studio Code, the editor required to install `jsonlite`
+
 ```R
 install.packages("jsonlite")
 ```
+
 even if the installation may not be a strict requirement.
 
 ### logger 
 The `logger` package is also installed for the logging purposes.
+
 ```R
 install.packages("logger")
 ```
 
 ### Plotting libraries
 
-In Julia, the plots are created with the `Makie`  and `GeoMakie` modules.     
+In Julia, the plots are created with the [`Makie`](https://makie.org/website/) and [`GeoMakie`](https://geo.makie.org/v0.7.12/) modules.           
 It might be more relevant to use only `R` library for the plotting tasks:
 
 ```R
@@ -158,23 +171,26 @@ install.packages("rnaturalearthdata")
 ## Configure Julia
 
 You may want to specify the path to the Julia executable with the command `julia_setup`:
+
 ```R
 library(JuliaCall)
 julia_setup(JULIA_HOME = path.expand("~/.juliaup/bin/"))
 ```
+
 If successful, this command will give:
+
 ```R
-Juliaup configuration is locked by another process, waiting for it to unlock.
-Julia version 1.10.0 at location /home/ctroupin/.julia/juliaup/julia-1.10.0+0.x64.linux.gnu/bin will be used.
+Julia version 1.11.5 at location /home/ctroupin/.julia/juliaup/julia-1.11.5+0.x64.linux.gnu/bin will be used.
 Loading setup script for JuliaCall...
 Finish loading setup script for JuliaCall.
 ```
+
 so you can test if R is actually going to use the correct Julia executable.      
 
-### Install Julia packages
+### Installing Julia packages
 
 We use the command `julia_install_package_if_needed( )` for the installation.      
-Some errors happened with using `julia_install_package( )`.
+(some errors happened with using `julia_install_package( )`).
 
 __Documentation:__ https://search.r-project.org/CRAN/refmans/JuliaCall/html/julia_package.html
 
@@ -194,6 +210,7 @@ julia_command("using Statistics")
 ```
 
 __Note:__ it is also possible to start a Julia session within `R`:
+
 ```R
 system("julia")
 ```
@@ -201,9 +218,11 @@ system("julia")
 ### NCDatasets
 
 It may be necessary to issue this command __before__ starting the `R` session, in order to ensure the correct `libcurl` is used:
+
 ```bash
 export LD_PRELOAD=${HOME}/.julia/juliaup/julia-1.10.0+0.x64.linux.gnu/lib/julia/libcurl.so.4.8.0
 ```
+
 (with the obvious adaptations in the path and in the library number).    
 The previous command ensures that the file will be loaded before any other library.
 
@@ -211,12 +230,16 @@ The previous command ensures that the file will be loaded before any other libra
 julia_command("using NCDatasets")
 julia_command("using DIVAnd")
 ```
+
 If the commands worked, the outputs are:
+
 ```R
 Precompiling NCDatasets
   2 dependencies successfully precompiled in 5 seconds. 44 already precompiled.
 ```
+
 and
+
 ```R
 Precompiling DIVAnd
   1 dependency successfully precompiled in 4 seconds. 192 already precompiled.
@@ -224,7 +247,22 @@ Precompiling DIVAnd
 
 ## Quick test
 
+This simple test can be run in a terminal:
+
 ```bash
-export LD_PRELOAD=${HOME}/.julia/juliaup/julia-1.10.2+0.x64.linux.gnu/lib/julia/libcurl.so.4.8.0
 Rscript DIVAnd_simple_1D.R
-`````
+```
+
+which will output
+
+```R
+Julia version 1.11.5 at location /home/ctroupin/.julia/juliaup/julia-1.11.5+0.x64.linux.gnu/bin will be used.
+Loading setup script for JuliaCall...
+Finish loading setup script for JuliaCall.
+Saving 7 x 7 in image
+Julia exit.
+```
+
+The results will be written in the netCDF file `diva_1D.nc` (in the product/netcdf directoryà and the following figure will be produced:
+
+![](../product/figures/divand_simple_1D_ref.png)
