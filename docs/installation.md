@@ -11,9 +11,37 @@ __Documentation:__ https://cran.r-project.org/web/packages/JuliaCall/readme/READ
 sudo apt install r-base
 ```
 
+To ensure that the installation has been successful, type `R` in a terminal:
+```bash
+$ R
+
+R version 4.5.0 (2025-04-11) -- "How About a Twenty-Six"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+```
+
 ### Editor [optional]
 
 If you want to work with an editor, the most widely used is [Rstudio](https://posit.co/download/rstudio-desktop/). Visual Studio Code also comes with various extensions to work with R (REditorSupport, R Debugger, ...). 
+
+It can be installed via the terminal
+```bash
+sudo apt install rstudio
+```
 
 ## Installation of Julia
 
@@ -29,12 +57,16 @@ which gives, in our case:
 ```bash
  Default  Channel  Version                 Update 
 --------------------------------------------------
-          1.10     1.10.0+0.x64.linux.gnu         
-          rc       1.10.0+0.x64.linux.gnu         
-       *  release  1.10.0+0.x64.linux.gnu 
+          1.10.4   1.10.4+0.x64.linux.gnu         
+          1.10.9   1.10.9+0.x64.linux.gnu         
+          1.11.4   1.11.4+0.x64.linux.gnu         
+       *  rc       1.11.5+0.x64.linux.gnu         
+          release  1.11.5+0.x64.linux.gnu 
 ```
 
 ## Installation of Julia language in R
+
+The selected library to call Julia in R is [`JuliaCall`](https://github.com/JuliaInterop/JuliaCall).
 
 In a R session:
 ```R
@@ -65,16 +97,21 @@ nickname       Bird Hippie
 version.string R version 4.2.3 (2023-03-15)
 nickname       Shortstop Beagle  
 ```
+* _How About a Twenty-Six_
+```R
+version.string R version 4.5.0 (2025-04-11)
+nickname       How About a Twenty-Six
+```   
 
 ## Installation of netCDF 
 
-`R` relies on the utility `nc-config` so it has to be installed:
+`R` relies on the utility `nc-config` (a command to query netCDF build options) so it has to be installed:
 ```bash
 sudo apt-get install libnetcdf-dev
 ```
 then the library can be installed:
 ```R
-  install.packages("ncdf4")
+install.packages("ncdf4")
 ```
 
 ## Installation of other packages [optional]
